@@ -5,10 +5,10 @@ import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 import { appTheme } from "../constants/Config";
 import { useTheme } from "../hooks/useTheme";
 import { NAVBAR_LINKS } from "../constants/NavbarLinks";
-import { iNavLinks } from "../types";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
+import NavItem from "./NavItem";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -25,34 +25,26 @@ const Navbar = () => {
 
       {/* Desktop nav */}
       <nav className="hidden md:flex items-center gap-6">
-        {NAVBAR_LINKS.map((item: iNavLinks) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`text-sm font-medium transition-opacity duration-200 ${isActive ? "opacity-100 underline underline-offset-4" : "opacity-60 hover:opacity-100"}`}
-            >{item.label}</Link>
-          );
-        })}
+        {NAVBAR_LINKS.map((item) => (
+          <NavItem
+            key={item.href}
+            {...item}
+            isActive={pathname === item.href}
+          />
+        ))}
       </nav>
 
       {/* Mobile nav from h-16 */}
       {isOpen && (
         <nav className="md:hidden absolute top-16 left-0 w-full h-[calc(100vh-4rem)] flex flex-col items-center gap-6 px-8 pt-8 border-t border-primary/10 bg-background z-50">
-          {NAVBAR_LINKS.map((item: iNavLinks) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={toggleNavBar}
-                className={`text-sm font-medium transition-opacity duration-200 ${isActive ? "opacity-100 underline underline-offset-4" : "opacity-60 hover:opacity-100"}`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+          {NAVBAR_LINKS.map((item) => (
+            <NavItem
+              key={item.href}
+              {...item}
+              isActive={pathname === item.href}
+              onClick={toggleNavBar}
+            />
+          ))}
         </nav>
       )}
 

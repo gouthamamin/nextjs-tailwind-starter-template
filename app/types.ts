@@ -9,3 +9,8 @@ export interface iNavLinks {
   label: string;
   href: string;
 };
+
+export interface NavItemProps extends iNavLinks {
+  isActive: boolean;
+  onClick?: () => void;
+}
