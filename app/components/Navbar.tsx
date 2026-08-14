@@ -6,10 +6,16 @@ import { appTheme } from "../constants/Config";
 import { useTheme } from "../hooks/useTheme";
 import { NAVBAR_LINKS } from "../constants/NavbarLinks";
 import { iNavLinks } from "../types";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { IoClose } from "react-icons/io5";
+import { useState } from "react";
 
 const Navbar = () => {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const toggleNavBar = () => setIsOpen(!isOpen);
 
   return (
     <header className="w-full flex items-center justify-between px-8 py-4 border-b border-primary/10">
@@ -17,7 +23,7 @@ const Navbar = () => {
         next.js app
       </Link>
 
-      <nav className="flex items-center gap-6">
+      <nav className="hidden md:flex items-center gap-6">
         {NAVBAR_LINKS.map((item: iNavLinks) => {
           const isActive = pathname === item.href;
           return (
@@ -30,9 +36,15 @@ const Navbar = () => {
         })}
       </nav>
 
-      <button onClick={toggleTheme} className="p-2 cursor-pointer">
-        {theme === appTheme.LIGHT ? <MdOutlineDarkMode size={24} /> : <MdOutlineLightMode size={24} />}
-      </button>
+      <div className="flex flex-row-reverse items-center gap-4">
+        <div className="md:hidden" onClick={toggleNavBar}>
+          {isOpen ? <IoClose className="text-xl" /> : <GiHamburgerMenu className="text-xl" />}
+        </div>
+        <button onClick={toggleTheme} className="p-2 cursor-pointer">
+          {theme === appTheme.LIGHT ? <MdOutlineDarkMode size={24} /> : <MdOutlineLightMode size={24} />}
+        </button>
+      </div>
+
     </header>
   );
 };
